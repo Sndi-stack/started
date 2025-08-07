@@ -13,15 +13,20 @@ class PengeluaranController extends Controller
         $this->middleware('auth');
     }
 
-    public function read() {
-    $pengeluaran = DB::table('pengeluaran') 
+    public function read(Request $request)
+{
+    $tanggal = $request->tanggal ?? date('Y-m-d'); // default ke hari ini
+
+    $pengeluaran = DB::table('pengeluaran')
         ->join('pembayaran', 'pengeluaran.id_metode', '=', 'pembayaran.id')
         ->select('pengeluaran.*', 'pembayaran.nama as metode')
+        ->whereDate('tanggal', $tanggal)
         ->orderBy('pengeluaran.id', 'DESC')
         ->get();
 
-    return view('admin.pengeluaran.index', compact('pengeluaran'));
+    return view('admin.pengeluaran.index', compact('pengeluaran', 'tanggal'));
 }
+
 
     public function add() {
     $Metode = DB::table('pembayaran')->orderBy('nama', 'ASC')->get();

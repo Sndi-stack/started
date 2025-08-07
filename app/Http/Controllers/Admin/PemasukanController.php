@@ -13,15 +13,19 @@ class PemasukanController extends Controller
         $this->middleware('auth');
     }
 
-    public function read() {
-        $pemasukan = DB::table('pemasukan')
-            ->join('pembayaran', 'pemasukan.id_metode', '=', 'pembayaran.id')
-            ->select('pemasukan.*', 'pembayaran.nama as metode')
-            ->orderBy('pemasukan.id', 'DESC')
-            ->get();
+    public function read(Request $request)
+{
+    $tanggal = $request->tanggal ?? date('Y-m-d'); // default ke hari ini jika kosong
 
-        return view('admin.pemasukan.index', compact('pemasukan'));
-    }
+    $pemasukan = DB::table('pemasukan')
+        ->join('pembayaran', 'pemasukan.id_metode', '=', 'pembayaran.id')
+        ->select('pemasukan.*', 'pembayaran.nama as metode')
+        ->whereDate('tanggal', $tanggal)
+        ->orderBy('pemasukan.id', 'DESC')
+        ->get();
+
+    return view('admin.pemasukan.index', compact('pemasukan', 'tanggal'));
+}
 
         public function add() {
         $Metode = DB::table('pembayaran')->orderBy('nama', 'ASC')->get();

@@ -6,7 +6,24 @@
       <div class="row">
          <div class="col-md-6 col-sm-12">
             <div class="title">
-               <h4>Data Pengeluaran</h4>
+               <h2 class="mb-3">Pengeluaran</h2>
+               <nav aria-label="breadcrumb" class="mb-3">
+                  <ol class="breadcrumb">
+                     <li class="breadcrumb-item text-muted">Data Input</li>
+                     <li class="breadcrumb-item active fw-bold" aria-current="page">Data Pengeluaran</li>
+                  </ol>
+               </nav>
+               <form action="{{ url('/admin/pengeluaran') }}" method="GET" class="mb-3">
+                  <div class="row g-2 align-items-center">
+                     <div class="col-auto">
+                        <input type="date" name="tanggal" class="form-control"
+                           value="{{ old('tanggal', $tanggal ?? date('Y-m-d')) }}">
+                     </div>
+                     <div class="col-auto">
+                        <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+                     </div>
+                  </div>
+               </form>
             </div>
          </div>
       </div>
