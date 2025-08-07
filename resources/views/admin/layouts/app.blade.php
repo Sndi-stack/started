@@ -373,12 +373,16 @@
 								<li><a href="/admin/kategori" class="@if ($activePage == 'kategori') active @endif">Data Kategori</a></li>
 								<li><a href="/admin/jenis" class="@if ($activePage == 'jenis') active @endif">Data Jenis</a></li>
 								<li><a href="/admin/pembayaran" class="@if ($activePage == 'jenis') active @endif">Data pembayaran</a></li>
-								<li><a href="/admin/barang" class="@if ($activePage == 'barang') active @endif">Barang</a></li>
 							</ul>
 							</ul>
 						</li>
 						<!-- Menu di luar Data Master -->
     					<li>
+        					<a href="/admin/barang" class="dropdown-toggle no-arrow @if ($activePage == 'barang') active @endif">
+           				 		<span class="micon bi bi-folder"></span><span class="mtext">Barang</span>
+        					</a>
+    					</li>
+						<li>
         					<a href="/admin/pemasukan" class="dropdown-toggle no-arrow @if ($activePage == 'pemasukan') active @endif">
            				 		<span class="micon fa fa-plus-circle"></span><span class="mtext">Pemasukan</span>
         					</a>
