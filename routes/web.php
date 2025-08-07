@@ -1,11 +1,16 @@
 <?php
 
+use App\Http\Controllers\Admin\BarangController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\LoginController;
 
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\jenisController;
+use App\Http\Controllers\Admin\KategoriController;
+use App\Http\Controllers\Admin\pemasukanController;
+use App\Http\Controllers\Admin\PembayaranController;
+use App\Http\Controllers\Admin\PengeluaranController;
 use Illuminate\Support\Facades\Artisan;
 
 /*
@@ -49,7 +54,7 @@ Route::post('/admin/change_password', [HomeController::class, 'change_password']
 Route::prefix('admin/kategori')
     ->name('admin.kategori.')
     ->middleware('cekLevel:1 2')
-    ->controller(jenisController::class)
+    ->controller(KategoriController::class)
     ->group(function () {
         Route::get('/', 'read')->name('read');
         Route::get('/add', 'add')->name('add');
@@ -71,3 +76,57 @@ Route::prefix('admin/kategori')
         Route::post('/update/{id}', 'update')->name('update');
         Route::get('/delete/{id}', 'delete')->name('delete');
     });
+
+       Route::prefix('admin/pembayaran')
+    ->name('admin.kategori.')
+    ->middleware('cekLevel:1 2')
+    ->controller(pembayaranController::class)
+    ->group(function () {
+        Route::get('/', 'read')->name('read');
+        Route::get('/add', 'add')->name('add');
+        Route::post('/create', 'create')->name('create');
+        Route::get('/edit/{id}', 'edit')->name('edit');
+        Route::post('/update/{id}', 'update')->name('update');
+        Route::get('/delete/{id}', 'delete')->name('delete');
+    });
+
+   Route::prefix('admin/pengeluaran')
+    ->name('admin.pengeluaran.')
+    ->middleware('cekLevel:1 2')
+    ->controller(\App\Http\Controllers\Admin\PengeluaranController::class)
+    ->group(function () {
+        Route::get('/', 'read')->name('read');
+        Route::get('/add', 'add')->name('add');
+        Route::post('/create', 'create')->name('create'); // PENTING INI ADA
+        Route::get('/edit/{id}', 'edit')->name('edit');
+        Route::post('/update/{id}', 'update')->name('update');
+        Route::get('/delete/{id}', 'delete')->name('delete');
+    });
+
+    Route::prefix('admin/pemasukan')
+    ->name('admin.pemasukan.')
+    ->middleware('cekLevel:1 2')
+    ->controller(\App\Http\Controllers\Admin\PemasukanController::class)
+    ->group(function () {
+        Route::get('/', 'read')->name('read');
+        Route::get('/add', 'add')->name('add');
+        Route::post('/create', 'create')->name('create');
+        Route::get('/edit/{id}', 'edit')->name('edit');
+        Route::post('/update/{id}', 'update')->name('update');
+        Route::get('/delete/{id}', 'delete')->name('delete');
+    });
+
+    Route::prefix('admin/barang')
+    ->name('admin.barang.')
+    ->middleware('cekLevel:1 2')
+    ->controller(BarangController::class)
+    ->group(function () {
+        Route::get('/', 'read')->name('read');
+        Route::get('/add', 'add')->name('add');
+        Route::post('/create', 'create')->name('create');
+        Route::get('/edit/{id}', 'edit')->name('edit');
+        Route::post('/update/{id}', 'update')->name('update');
+        Route::get('/delete/{id}', 'delete')->name('delete');
+    });
+
+          
