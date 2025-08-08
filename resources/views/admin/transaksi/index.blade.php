@@ -120,19 +120,21 @@
          </button>
       </div>
       @endif
-             <table class="table table-striped table-bordered data-table hover">
+      @if (session('info'))
+      <div class="alert alert-info">
+         {{ session('info')}}
+         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+         <span aria-hidden="true">&times;</span>
+         </button>
+      </div>
+      @endif
+                           <table class="table table-striped table-bordered data-table hover">
           <thead class="bg-primary text-white">
              <tr>
                 <th width="5%" >#</th>
                 <th>Tanggal</th>
-                <th>Pukul</th>
                 <th>Nama Pelanggan</th>
-                <th>Contact</th>
-                <th>Metode</th>
                 <th>Total</th>
-                <th>Potongan</th>
-                <th>Bayar</th>
-                <th>Kembali</th>
                 <th>Status</th>
                 <th class="table-plus datatable-nosort text-center">Action</th>
              </tr>
@@ -142,15 +144,9 @@
              @foreach($transaksi as $data)
              <tr>
                 <td class="text-center">{{$no++}}</td>
-                <td>{{date('d/m/Y', strtotime($data->tanggal))}}</td>
-                <td>{{$data->pukul}}</td>
+                <td>{{date('d/m/Y', strtotime($data->tanggal))}} {{$data->pukul}}</td>
                 <td>{{$data->nama}}</td>
-                <td>{{$data->contact}}</td>
-                <td>{{$data->nama_metode}}</td>
                 <td>Rp {{number_format($data->total, 0, ',', '.')}}</td>
-                <td>Rp {{number_format($data->potongan, 0, ',', '.')}}</td>
-                <td>Rp {{number_format($data->bayar, 0, ',', '.')}}</td>
-                <td>Rp {{number_format($data->kembali, 0, ',', '.')}}</td>
                 <td>
                    @if($data->status == 'pending')
                       <span class="badge badge-warning">Pending</span>
@@ -160,7 +156,8 @@
                       <span class="badge badge-danger">Cancelled</span>
                    @endif
                 </td>
-                <td class="text-center" width="15%">
+                <td class="text-center" width="20%">
+                   <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#detail-{{$data->id}}"><i class="fa fa-eye" data-toggle="tooltip" data-placement="top" title="Lihat Detail"></i></button>
                    <a href="/admin/transaksi/edit/{{$data->id}}"><button class="btn btn-success btn-xs"><i class="fa fa-edit" data-toggle="tooltip" data-placement="top" title="Edit Data"></i></button></a>
                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#data-{{$data->id}}"><i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title="Delete Data"></i></button>
                 </td>
@@ -208,4 +205,117 @@
    </div>
 </div>
 @endforeach
+
+<!-- Modal Detail Transaksi -->
+@foreach($transaksi as $data)
+<div class="modal fade" id="detail-{{$data->id}}" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+         <div class="modal-header bg-gradient-primary text-white">
+            <h5 class="modal-title"><i class="fa fa-file-invoice-dollar"></i> Detail Transaksi - <strong>{{$data->nama}}</strong></h5>
+            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <!-- Informasi Transaksi -->
+            <div class="row mb-4">
+               <div class="col-md-6">
+                  <div class="card shadow-sm">
+                     <div class="card-header bg-light">
+                        <strong><i class="fa fa-info-circle"></i> Informasi Pelanggan</strong>
+                     </div>
+                     <div class="card-body">
+                        <p><strong>Nama:</strong> {{$data->nama}}</p>
+                        <p><strong>Contact:</strong> {{$data->contact}}</p>
+                        <p><strong>Metode:</strong> {{$data->nama_metode}}</p>
+                        <p><strong>Status:</strong>
+                           @if($data->status == 'pending')
+                              <span class="badge badge-warning">Pending</span>
+                           @elseif($data->status == 'completed')
+                              <span class="badge badge-success">Completed</span>
+                           @else
+                              <span class="badge badge-danger">Cancelled</span>
+                           @endif
+                        </p>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <div class="card shadow-sm">
+                     <div class="card-header bg-light">
+                        <strong><i class="fa fa-calendar-alt"></i> Informasi Waktu & Total</strong>
+                     </div>
+                     <div class="card-body">
+                        <p><strong>Tanggal:</strong> {{date('d/m/Y', strtotime($data->tanggal))}}</p>
+                        <p><strong>Pukul:</strong> {{$data->pukul}}</p>
+                        <p><strong>Total:</strong> <span class="badge badge-primary">Rp {{number_format($data->total, 0, ',', '.')}}</span></p>
+                        <p><strong>Potongan:</strong> Rp {{number_format($data->potongan, 0, ',', '.')}}</p>
+                        <p><strong>Bayar:</strong> <span class="text-success">Rp {{number_format($data->bayar, 0, ',', '.')}}</span></p>
+                        <p><strong>Kembali:</strong> <span class="text-danger">Rp {{number_format($data->kembali, 0, ',', '.')}}</span></p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <!-- Detail Barang -->
+            <div class="card shadow-sm">
+               <div class="card-header bg-success text-white">
+                  <strong><i class="fa fa-boxes"></i> Rincian Barang</strong>
+               </div>
+               <div class="card-body table-responsive">
+                  <table class="table table-bordered table-hover">
+                     <thead class="bg-light">
+                        <tr>
+                           <th>#</th>
+                           <th>Nama Barang</th>
+                           <th class="text-center">Jumlah</th>
+                           <th class="text-right">Harga</th>
+                           <th class="text-right">Diskon</th>
+                           <th class="text-right">Total</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        @php
+                           $detail_items = DB::table('detail_transaksi')
+                              ->join('barang', 'detail_transaksi.id_barang', '=', 'barang.id')
+                              ->where('detail_transaksi.id_transaksi', $data->id)
+                              ->select('detail_transaksi.*', 'barang.nama as nama_barang')
+                              ->get();
+                           $no_detail = 1;
+                           $total_items = 0;
+                        @endphp
+                        @foreach($detail_items as $item)
+                        <tr>
+                           <td class="text-center">{{$no_detail++}}</td>
+                           <td>{{$item->nama_barang}}</td>
+                           <td class="text-center">{{$item->jumlah}}</td>
+                           <td class="text-right">Rp {{number_format($item->harga, 0, ',', '.')}}</td>
+                           <td class="text-right">Rp {{number_format($item->diskon, 0, ',', '.')}}</td>
+                           <td class="text-right text-primary"><strong>Rp {{number_format($item->total, 0, ',', '.')}}</strong></td>
+                        </tr>
+                        @php $total_items += $item->total; @endphp
+                        @endforeach
+                        <tr class="bg-light font-weight-bold">
+                           <td colspan="5" class="text-right">Total Semua Item</td>
+                           <td class="text-right text-success">Rp {{number_format($total_items, 0, ',', '.')}}</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+               <i class="fa fa-times"></i> Tutup
+            </button>
+            <a href="/admin/transaksi/edit/{{$data->id}}" class="btn btn-primary">
+               <i class="fa fa-edit"></i> Edit Transaksi
+            </a>
+         </div>
+      </div>
+   </div>
+</div>
+@endforeach
+
 @endsection

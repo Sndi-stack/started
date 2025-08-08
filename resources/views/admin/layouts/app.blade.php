@@ -405,7 +405,7 @@
 							</a>
 							<ul class="submenu">
 								<li><a href="/admin/transaksi" class="@if ($activePage == 'transaksi') active @endif">Data Transaksi</a></li>
-								<li><a href="/admin/detail-transaksi" class="@if ($activePage == 'detail_transaksi') active @endif">Detail Transaksi</a></li>
+								{{-- <li><a href="/admin/detail-transaksi" class="@if ($activePage == 'detail_transaksi') active @endif">Detail Transaksi</a></li> --}}
 							</ul>
 						</li>
 						
