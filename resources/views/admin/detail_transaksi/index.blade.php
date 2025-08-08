@@ -90,7 +90,7 @@
       <div class="modal-content">
          <div class="modal-body">
             <h2 class="text-center">
-            Apakah Anda Yakin Menghapus Data Ini ?
+            Apakah Anda Yakin Menghapus Ini ?
             </h2>
             <hr>
             <div class="form-group" style="font-size: 17px;">
